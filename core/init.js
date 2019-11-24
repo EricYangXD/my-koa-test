@@ -2,7 +2,7 @@
  * @Author: Eric YangXinde
  * @Date: 2019-11-20 15:40:34
  * @LastModifiedBy: Eric YangXinde
- * @LastEditTime: 2019-11-20 16:08:36
+ * @LastEditTime: 2019-11-21 15:48:40
  * @Description:
  */
 const requireDirectory = require("require-directory");
@@ -11,6 +11,14 @@ class InitManager {
   static initCore(app) {
     InitManager.app = app;
     InitManager.initLoadRouters();
+    InitManager.loadHttpException();
+    InitManager.loadConfig();
+  }
+
+  static loadConfig(path = "") {
+    const configPath = path || process.cwd() + "/config/config.js";
+    const config = require(configPath);
+    global.config = config; //全局注册
   }
 
   static initLoadRouters() {
@@ -25,6 +33,11 @@ class InitManager {
         InitManager.app.use(obj.routes());
       }
     }
+  }
+
+  static loadHttpException() {
+    const errors = require("./http-exception");
+    global.errs = errors; //挂载到全局变量下，属性名自己定义即可
   }
 }
 
