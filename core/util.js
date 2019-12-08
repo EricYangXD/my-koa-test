@@ -2,7 +2,7 @@
  * @Author: Eric YangXinde
  * @Date: 2019-11-21 13:46:50
  * @LastModifiedBy: Eric YangXinde
- * @LastEditTime: 2019-11-21 13:46:53
+ * @LastEditTime: 2019-12-08 16:50:46
  * @Description:
  */
 const jwt = require("jsonwebtoken");
@@ -39,9 +39,11 @@ const findMembers = function(instance, { prefix, specifiedType, filter }) {
 };
 
 const generateToken = function(uid, scope) {
+  // 读取配置
   const secretKey = global.config.security.secretKey;
   const expiresIn = global.config.security.expiresIn;
   const token = jwt.sign(
+    // payload即传输的数据
     {
       uid,
       scope
@@ -58,15 +60,3 @@ module.exports = {
   findMembers,
   generateToken
 };
-
-// const generateToken = function (uid, scope) {
-//     const secretKey = global.config.security.secretKey
-//     const expiresIn = global.config.security.expiresIn
-//     const token = jwt.sign({
-//         uid,
-//         scope
-//     }, secretKey, {
-//         expiresIn: expiresIn
-//     })
-//     return token
-// }

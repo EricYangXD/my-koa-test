@@ -2,7 +2,7 @@
  * @Author: Eric YangXinde
  * @Date: 2019-11-20 13:36:07
  * @LastModifiedBy: Eric YangXinde
- * @LastEditTime: 2019-11-21 14:38:01
+ * @LastEditTime: 2019-11-24 17:35:36
  * @Description:
  */
 const Router = require("koa-router");
@@ -13,15 +13,17 @@ const { PositiveIntegerValidator } = require("../../validators/validator");
 //   ParameterException
 // } = require("../../../core/http-exception");
 
-router.post("/v1/:id/classic/latest", (ctx, next) => {
+router.post("/v1/:id/classic/latest", async (ctx, next) => {
   const path = ctx.params; //id JS对象
   const query = ctx.request.query; //param JS对象
   const header = ctx.request.header; //header JS对象
   const token = ctx.request.header.token; //token
   const body = ctx.request.body; //body JS对象
 
+  require("../../models/user");
+
   // 正整数校验器
-  const positiveInt = new PositiveIntegerValidator().validate(ctx);
+  const positiveInt = await new PositiveIntegerValidator().validate(ctx);
   const id = positiveInt.get("path.id", (parsed = false));
   ctx.body = { id: id };
   //未知异常举例：语法错误啥的
